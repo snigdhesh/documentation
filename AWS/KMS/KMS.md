@@ -46,50 +46,59 @@
    - Bucket owner preferred
 - Unblock public access
 - Enable bucket versioning
-- **Encryption type:** Server side (cause we are dealing with S3 bucket, S3Bucket is the server)
+- **Encryption type:** Server side:SSE-S3 (cause we are dealing with S3 bucket, S3Bucket is the server)
 - click **create bucket**
 - Open bucket
 - Update file `Ex: index.html` and click upload
-- go to `properties` tab > Here you can see `default encryption type`
+- go to bucket > `properties` tab > Here you can see `Default encryption`
 
+### Create IAM User
+--------------------
+- Go to IAM dashboard
+- Create user. `Example: John`
+- Provide access to console > I want to create an IAM user > custom password
+- Add policy "AmazonS3FullAccess"
+**Note:** Policy is an object in AWS, that defines permissions.
+**Note:** Set of grouped permissions is called policy. Ex: AmplifyAdminPolicy has createService, readService, deleteService permissions.
 
 
 #### Create Customer managed keys
 -------------------------------------
 - Go to KMS service
-- Select customer managed keys > create key
+- Select `customer managed keys` > create key
 - **keyType:** Symmetric (S3 can access only Symmetric)
-- **keyUsage:** Encrypt and Decrypt
+- **keyUsage:** Encrypt and Decrypt.
 - Leave `Advanced Options` as it is and click `Next`
 - Add lables
    - Give alias name. `Ex: KMS_alias` and click `Next`
 - Define key admin premissions
-   - Select encryption (This is an IAM user named "encryption" who is given only access to S3 Bucket)
+   - Select `John` (**John** is an IAM user, given access only to S3 Bucket)
+   - Click `next`
 - Define key usage permissions
-  - Select encryption and click next > Finish
+  - Select `John` and click next > Finish
 
 
 #### Modifiy encryption type on S3 Bucket
 -------------------------------------------
 Go to S3 bucket > properties tab > Default encryption > edit 
   - **Encryption Type:** choose "Server-side-encryption with AWS KMS"
-  - **AWS KMS key:** Choose your KMS key (Ex: KMS_alias)
+  - **AWS KMS key:** Choose your KMS key ARN (Ex: Your can see alias name "KMS_alias" under keyId)
   - **BucketKey:** enable
   - Save changes
 
 **Note:** 
-- At this point you can't see modified **default encryption** reflected
-- Upload a new file > Go to **properties** > check **default encryption** (You can see default encryption is updated)
+- At this point you can see modified **default encryption** reflected. Go to S3 Bucket > properties tab > Check default encryption > Click on key, to see your alias name.
+- Upload a new file > Go to **properties** > check **default encryption** (You can see default encryption is updated here too)
 
 #### Testing
 ----------------
-- Click > profile pic > copy accountId
-- Go to incognito window > login to amazon console with new accountId as root user.
-    - username: encryption
+- Click > profile pic > copy `accountId`
+- Go to incognito window > login to amazon console with new accountId as IAM user.
+    - username: John
     - password: 
 
 
-- Once you login you can see this user has only view access to S3 bucket.
+- Once you login you can see this user has only view access to `S3 bucket.`
 
 **Note:** You can open html page from S3 bucket `Open` button.
 
@@ -108,5 +117,14 @@ Answers unclear, but it works either way.
 KMS > Actions > Schedule key deletion
 
 **How to restrict user to access S3 bucket?**  
-- If you want to restrict user named `encryption` to access files in S3, you need to do following.
-- Remove user named `encryption` from `KMS > customer managed keys > Key admin & Key users`
+- If you want to restrict user named `John` to access files in S3, you need to do following.
+- Remove user named `John` from `KMS > customer managed keys > Key admin & Key users`
+
+**What's difference between "Key admin permissions" and "Key user permissions"?
+**Key admin permissions** will be assigned to a user. 
+    - This user can manage (perform CRUD operations) key, 
+    - but cannot use this key, to perform encryption/decryption
+**Key user permissions** will be assigned to a user. 
+    - This user can use this key to perform encryption/decryption, 
+    - but cannot manage (perform curd operations) this key.
+
