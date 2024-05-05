@@ -120,11 +120,11 @@ KMS > Actions > Schedule key deletion
 - If you want to restrict user named `John` to access files in S3, you need to do following.
 - Remove user named `John` from `KMS > customer managed keys > Key admin & Key users`
 
-**What's difference between "Key admin permissions" and "Key user permissions"?
-**Key admin permissions** will be assigned to a user. 
-    - This user can manage (perform CRUD operations) key, 
-    - but cannot use this key, to perform encryption/decryption
-**Key user permissions** will be assigned to a user. 
-    - This user can use this key to perform encryption/decryption, 
-    - but cannot manage (perform curd operations) this key.
+**What's difference between "Key admin permissions" and "Key user permissions"?**  
+**Key admin permissions** will be assigned to a user.   
+    - This user can manage (perform CRUD operations) key,   
+    - but cannot use this key, to perform encryption/decryption  
+**Key user permissions** will be assigned to a user.   
+    - This user can use this key to perform encryption/decryption,   
+    - but cannot manage (perform curd operations) this key.  
 
