@@ -1,6 +1,6 @@
 **Note:** Test private fields only if it's absolutely necessary
 
-Spring framework provides a utility class : `ReflectionTestUtils``
+Spring framework provides a utility class : `ReflectionTestUtils`
 
 Using this class
 - we can get/set non-public fields directly.
